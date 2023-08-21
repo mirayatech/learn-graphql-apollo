@@ -4,7 +4,6 @@ import database from "./database";
 import { typeDefs } from "./schema";
 
 // Define resolvers for GraphQL queries
-// resolvers
 const resolvers = {
   Query: {
     games() {
@@ -56,6 +55,15 @@ const resolvers = {
       };
       database.games.push(game);
       return game;
+    },
+    updateGame(_, args) {
+      database.games = database.games.map((game) => {
+        if (game.id === args.id) {
+          return { ...game, ...args.edits };
+        }
+        return game;
+      });
+      return database.games.find((game) => game.id === args.id);
     },
   },
 };
